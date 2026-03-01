@@ -11,7 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool _userExists = false;
   String _phone = '';
   String? _token;
-  String _nickname = '';
+  String? _nickname = '';
 
   AuthBloc(this.repository) : super(AuthInitial()) {
     on<SendOtpEvent>((event, emit) async {
@@ -21,8 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final data = await repository.sendOtp(event.phone);
         _apiOtp = data['otp']?.toString() ?? '';
         _userExists = data['user_exists'] ?? false;
-        _token = data['token'];
-        _nickname = data['nickname'];
+        _token = data['token']?.toString() ?? '';
+        _nickname = data['nickname']?.toString() ?? '';
         await SharedPreferencesDataProvider().saveAccessToken(_token ?? '');
         emit(
           OtpSent(
@@ -78,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (response['status'] == 'success' && response['token'] != null) {
           _token = response['token'];
           await SharedPreferencesDataProvider().saveAccessToken(_token ?? '');
-           await SharedPreferencesDataProvider().saveAccessToken(nickname ?? '');
+          await SharedPreferencesDataProvider().saveUserName(nickname ?? '');
           emit(AuthSuccess(token: _token!));
         } else {
           emit(OnboardingFailure("Failed to create account"));

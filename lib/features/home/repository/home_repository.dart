@@ -63,11 +63,10 @@ class HomeRepository {
       print("Add Transaction API calling..$response");
       print("Status code: ${response.statusCode}");
       print("Response : ${response.data}");
-      
+      await getTransactions();
 
       return response.data;
     } catch (e) {
-      
       print("addTransactions error: $e");
       return {};
     }

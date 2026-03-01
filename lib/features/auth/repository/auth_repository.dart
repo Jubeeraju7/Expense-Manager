@@ -20,10 +20,13 @@ class AuthRepository {
 
   Future<Map<String, dynamic>> sendOtp(String phone) async {
     try {
-      final response = await dio.post(
-        "/auth/send-otp/",
-        data: {"phone": "+91$phone"},
-      );
+      final body = {"phone": "+91$phone"};
+
+      print("Request Body: $body");
+
+      final response = await dio.post("/auth/send-otp/", data: body);
+      print("Status Code: ${response.statusCode}");
+      print("Response Data: ${response.data}");
 
       final data = response.data;
 
@@ -31,7 +34,6 @@ class AuthRepository {
         await prefs.saveUserName(data["nickname"]);
       }
 
-      print("sendOtp response: $data");
       return data;
     } catch (e) {
       print("sendOtp error: $e");
@@ -46,10 +48,7 @@ class AuthRepository {
     try {
       final response = await dio.post(
         "/auth/create-account/",
-        data: {
-          "phone": "+91$phone",
-          "nickname": nickname,
-        },
+        data: {"phone": "+91$phone", "nickname": nickname},
       );
 
       final data = response.data;

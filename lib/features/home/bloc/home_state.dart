@@ -14,11 +14,12 @@ class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final List<dynamic> transactions;
+  final List<Category> categories;
 
-  const HomeLoaded({required this.transactions});
+  const HomeLoaded({required this.transactions, required this.categories});
 
   @override
-  List<Object?> get props => [transactions];
+  List<Object?> get props => [transactions, categories];
 }
 
 class HomeError extends HomeState {

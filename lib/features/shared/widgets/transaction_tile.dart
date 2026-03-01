@@ -103,7 +103,8 @@ class TransactionTile extends StatelessWidget {
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text("Cancel"),
+                              child: const Text("Cancel",
+                              style: TextStyle(color: Colors.white),),
                             ),
                             TextButton(
                               onPressed: () {

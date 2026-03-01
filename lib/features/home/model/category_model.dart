@@ -4,7 +4,7 @@ class Category {
 
   Category({
     required this.categoryid,
-    required this.name,
+    required this.name, 
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {

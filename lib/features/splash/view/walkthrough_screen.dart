@@ -39,7 +39,6 @@ class WalkthroughScreen extends StatelessWidget {
         },
         builder: (context, state) {
           final currentPage = state.currentPage;
-
           return Scaffold(
             body: PageView.builder(
               controller: controller,
@@ -128,9 +127,6 @@ class WalkthroughScreen extends StatelessWidget {
                                           minimumSize: const Size(double.infinity, 50),
                                         ),
                                         onPressed: () {
-
-
-                                          
                                           if (currentPage == data.length - 1) {
                                             Navigator.pushReplacement(
                                               context,

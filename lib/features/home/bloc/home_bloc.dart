@@ -1,3 +1,4 @@
+import 'package:proactive_expense_manager/features/home/model/category_model.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 import 'package:uuid/uuid.dart';
@@ -9,38 +10,52 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeBloc(this.repository) : super(HomeInitial()) {
     on<FetchCategories>((event, emit) async {
-      emit(CategoryLoading());
+      final currentTransactions = (state is HomeLoaded)
+          ? (state as HomeLoaded).transactions
+          : <dynamic>[];
+
+      emit(HomeLoading());
 
       try {
         final categories = await repository.fetchCategories();
-        emit(CategoryLoaded( categories: categories, ));
+        emit(
+          HomeLoaded(transactions: currentTransactions, categories: categories),
+        );
       } catch (e) {
-        emit(CategoryError(e.toString()));
+        emit(HomeError(message: e.toString()));
       }
     });
 
     on<LoadTransactionsEvent>((event, emit) async {
+      final currentCategories = (state is HomeLoaded)
+          ? (state as HomeLoaded).categories
+          : <Category>[];
+
       emit(HomeLoading());
 
       try {
         final data = await repository.getTransactions();
-
-        emit(HomeLoaded(transactions: data['transactions'] ?? []));
+        emit(
+          HomeLoaded(
+            transactions: data['transactions'] ?? [],
+            categories: currentCategories,
+          ),
+        );
       } catch (e) {
         emit(HomeError(message: e.toString()));
       }
     });
 
     on<SaveTransactionEvent>((event, emit) async {
+      if (state is! HomeLoaded) return;
       emit(TransactionSaving());
-
       try {
         final transaction = {
           "id": const Uuid().v4(),
           "amount": event.amount,
           "note": event.title,
           "type": event.isExpense ? "debit" : "credit",
-          "category_id": event.categoryId,
+          "category_id": event.categoryId ?? "unknown_id",
           "timestamp": DateTime.now().toIso8601String(),
         };
 
@@ -49,14 +64,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         };
 
         await repository.addTransactions(body);
-        emit(TransactionSaved());
-        add(LoadTransactionsEvent());
+        final fullData = await repository.getTransactions();
+        final fullTransactions = fullData['transactions'] ?? [];
+        print(
+          "-----------------------------------Full Transactions after adding: $fullTransactions",
+        );
+        final currentTransactions = (state is HomeLoaded)
+            ? (state as HomeLoaded).transactions
+            : [];
+        final currentCategories = (state is HomeLoaded)
+            ? List<Category>.from((state as HomeLoaded).categories)
+            : <Category>[];
+
+        emit(
+          HomeLoaded(
+            transactions: currentTransactions,
+            categories: currentCategories,
+          ),
+        );
       } catch (e) {
         emit(TransactionSaveError(e.toString()));
       }
     });
 
-    /// DELETE TRANSACTION
     on<DeleteTransactionEvent>((event, emit) async {
       if (state is! HomeLoaded) return;
 
@@ -70,8 +100,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final updatedTransactions = currentState.transactions
             .where((tx) => !event.ids.contains(tx['id']))
             .toList();
-
-        emit(HomeLoaded(transactions: updatedTransactions));
+        emit(
+          HomeLoaded(
+            transactions: updatedTransactions,
+            categories: currentState.categories,
+          ),
+        );
       } catch (e) {
         emit(HomeError(message: e.toString()));
       }
