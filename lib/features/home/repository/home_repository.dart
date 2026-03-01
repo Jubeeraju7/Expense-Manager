@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:proactive_expense_manager/core/network/api_client.dart';
 import 'package:proactive_expense_manager/features/home/model/category_model.dart';
@@ -42,6 +43,7 @@ class HomeRepository {
   Future<Map<String, dynamic>> getTransactions() async {
     try {
       final response = await apiClient.dio.get("/transactions/");
+      print("Transaction API calling..$response");
       return response.data;
     } catch (e) {
       print("getTransactions error: $e");
@@ -50,17 +52,22 @@ class HomeRepository {
   }
 
   Future<Map<String, dynamic>> addTransactions(
-    List<Map<String, dynamic>> transactions,
+    Map<String, dynamic> body,
   ) async {
     try {
+      print("Body: $body");
       final response = await apiClient.dio.post(
         "/transactions/add/",
-        data: {"transactions": transactions},
+        data: jsonEncode(body),
       );
-      print("Category API calling..$response");
+      print("Add Transaction API calling..$response");
+      print("Status code: ${response.statusCode}");
+      print("Response : ${response.data}");
+      
 
       return response.data;
     } catch (e) {
+      
       print("addTransactions error: $e");
       return {};
     }
@@ -72,7 +79,9 @@ class HomeRepository {
         "/transactions/delete/",
         data: {"ids": ids},
       );
-      print("Category API calling..$response");
+      print("Delete Transaction API calling..$response");
+      print("Status code: ${response.statusCode}");
+      print("Response : ${response.data}");
       return response.data;
     } catch (e) {
       print("deleteTransactions error: $e");

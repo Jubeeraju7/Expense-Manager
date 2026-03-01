@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:proactive_expense_manager/features/home/model/category_model.dart';
 
 abstract class HomeState extends Equatable {
+  const HomeState();
+
   @override
   List<Object?> get props => [];
 }
@@ -12,7 +14,8 @@ class HomeLoading extends HomeState {}
 
 class HomeLoaded extends HomeState {
   final List<dynamic> transactions;
-  HomeLoaded({required this.transactions});
+
+  const HomeLoaded({required this.transactions});
 
   @override
   List<Object?> get props => [transactions];
@@ -20,30 +23,53 @@ class HomeLoaded extends HomeState {
 
 class HomeError extends HomeState {
   final String message;
-  HomeError({required this.message});
+
+  const HomeError({required this.message});
 
   @override
   List<Object?> get props => [message];
 }
 
-class CategoryInitial extends HomeState {}
+class TransactionSaving extends HomeState {}
+
+class TransactionSaved extends HomeState {}
+
+class TransactionSaveError extends HomeState {
+  final String message;
+
+  const TransactionSaveError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
 
 class CategoryLoading extends HomeState {}
 
 class CategoryLoaded extends HomeState {
   final List<Category> categories;
+  final String? selectedCategoryId;
 
-  CategoryLoaded(this.categories);
+  const CategoryLoaded({required this.categories, this.selectedCategoryId});
+
+  CategoryLoaded copyWith({
+    List<Category>? categories,
+    String? selectedCategoryId,
+  }) {
+    return CategoryLoaded(
+      categories: categories ?? this.categories,
+      selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
+    );
+  }
 
   @override
-  List<Object> get props => [categories];
+  List<Object?> get props => [categories, selectedCategoryId];
 }
 
 class CategoryError extends HomeState {
   final String message;
 
-  CategoryError(this.message);
+  const CategoryError(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

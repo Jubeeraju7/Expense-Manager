@@ -8,7 +8,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc(this.repository) : super(ProfileInitial()) {
 
-    // Fetch categories
     on<FetchCategoriesEvent>((event, emit) async {
       emit(CategoryLoading());
 
@@ -20,7 +19,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
 
-    // Add category
     on<AddCategoryEvent>((event, emit) async {
       try {
         await repository.addCategory(event.name);
@@ -32,16 +30,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
 
-    // Delete category
     on<DeleteCategoryEvent>((event, emit) async {
       try {
         if (state is CategoryLoaded) {
           final currentState = state as CategoryLoaded;
 
-          await repository.deleteCategories([event.id]);
+          await repository.deleteCategory(event.ids);
 
           final updatedList = currentState.categories
-              .where((category) => category.id != event.id)
+              .where((category) => category.categoryid != event.ids)
               .toList();
 
           emit(CategoryLoaded(updatedList));

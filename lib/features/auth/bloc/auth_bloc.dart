@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool _userExists = false;
   String _phone = '';
   String? _token;
+  String _nickname = '';
 
   AuthBloc(this.repository) : super(AuthInitial()) {
     on<SendOtpEvent>((event, emit) async {
@@ -21,13 +22,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _apiOtp = data['otp']?.toString() ?? '';
         _userExists = data['user_exists'] ?? false;
         _token = data['token'];
+        _nickname = data['nickname'];
         await SharedPreferencesDataProvider().saveAccessToken(_token ?? '');
         emit(
           OtpSent(
             otp: _apiOtp,
             userExists: _userExists,
             token: _token,
-            nickname: data['nickname'],
+            nickname: _nickname,
           ),
         );
       } catch (e) {
@@ -39,6 +41,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event.otp == _apiOtp) {
         if (_userExists) {
           await SharedPreferencesDataProvider().saveAccessToken(_token ?? '');
+          await SharedPreferencesDataProvider().saveUserName(_nickname ?? '');
           emit(AuthSuccess(token: _token ?? ''));
         } else {
           emit(AuthOnboardingRequired(phone: _phone));
@@ -48,12 +51,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-    // NICKNAME CHANGE
+    // Nickname change
     on<NicknameChanged>((event, emit) {
       emit(OnboardingState(nickname: event.nickname));
     });
 
-    // SUBMIT NICKNAME → CREATE ACCOUNT
+    // Create account
     on<SubmitNickname>((event, emit) async {
       final currentState = state;
       String nickname = '';
@@ -75,6 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (response['status'] == 'success' && response['token'] != null) {
           _token = response['token'];
           await SharedPreferencesDataProvider().saveAccessToken(_token ?? '');
+           await SharedPreferencesDataProvider().saveAccessToken(nickname ?? '');
           emit(AuthSuccess(token: _token!));
         } else {
           emit(OnboardingFailure("Failed to create account"));

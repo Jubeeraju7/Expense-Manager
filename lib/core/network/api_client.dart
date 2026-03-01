@@ -18,7 +18,7 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await SharedPreferencesDataProvider().getAccessToken();
-          print("the token$token");
+          print("the token : $token");
           if (token != null && token.isNotEmpty) {
             options.headers["Authorization"] = "Bearer $token";
           }
@@ -27,7 +27,6 @@ class ApiClient {
         },
         onError: (error, handler) {
           if (error.response?.statusCode == 401) {
-            // Token expired or invalid
             print("Unauthorized - Token may be expired");
           }
           return handler.next(error);

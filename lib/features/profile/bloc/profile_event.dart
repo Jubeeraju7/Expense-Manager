@@ -8,6 +8,10 @@ class AddCategoryEvent extends ProfileEvent {
 }
 
 class DeleteCategoryEvent extends ProfileEvent {
-  final String id;
-  DeleteCategoryEvent(this.id);
+  final List<String> ids;
+
+  DeleteCategoryEvent(this.ids);
+
+  @override
+  List<Object?> get props => [ids];
 }

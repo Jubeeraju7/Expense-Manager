@@ -16,7 +16,6 @@ class ProfileSettingsScreen extends StatefulWidget {
 }
 
 class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
-
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController nicknameController = TextEditingController();
@@ -38,7 +37,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               const SizedBox(height: 10),
 
               const Text(
@@ -94,10 +92,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                 decoration: _boxDecoration(),
                 child: Column(
                   children: [
-
                     Row(
                       children: [
-
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -125,8 +121,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF5C5CFF),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 14),
+                              horizontal: 18,
+                              vertical: 14,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -136,9 +133,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
                           child: const Text(
                             "Set",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12),
+                            style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
                       ],
@@ -153,7 +148,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -172,10 +166,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                 decoration: _boxDecoration(),
                 child: Column(
                   children: [
-
                     Row(
                       children: [
-
                         Expanded(
                           child: Container(
                             height: 45,
@@ -200,11 +192,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
                         GestureDetector(
                           onTap: () {
-
                             final name = categoryController.text.trim();
 
                             if (name.isNotEmpty) {
-
                               context.read<ProfileBloc>().add(
                                 AddCategoryEvent(name),
                               );
@@ -220,8 +210,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               color: const Color(0xFF5C5CFF),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.add,
-                                color: Colors.white),
+                            child: const Icon(Icons.add, color: Colors.white),
                           ),
                         ),
                       ],
@@ -231,7 +220,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
                     BlocBuilder<ProfileBloc, ProfileState>(
                       builder: (context, state) {
-
                         if (state is CategoryLoading) {
                           return const Center(
                             child: CircularProgressIndicator(),
@@ -243,14 +231,13 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             children: state.categories.map((category) {
-                              return CategoryItem(
-                                category.name,
-                                    () {
-                                  context.read<ProfileBloc>().add(
-                                    DeleteCategoryEvent(category.id),
-                                  );
-                                },
-                              );
+                              return CategoryItem(category.name, () {
+                                print("Deleting category id: ${category.categoryid}");
+                                context.read<ProfileBloc>().add(
+                                  DeleteCategoryEvent([category.categoryid]),
+                                );
+                                
+                              });
                             }).toList(),
                           );
                         }
@@ -277,13 +264,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
                       child: Row(
                         children: const [
-
                           Expanded(
                             child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 Text(
                                   "Sync To Cloud",
                                   style: TextStyle(
@@ -297,16 +281,13 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
                                 Text(
                                   "Sync and update data to the backend",
-                                  style:
-                                  TextStyle(color: Colors.white70),
+                                  style: TextStyle(color: Colors.white70),
                                 ),
                               ],
                             ),
                           ),
 
-                          Icon(Icons.cloud_upload,
-                              color: Colors.white),
-
+                          Icon(Icons.cloud_upload, color: Colors.white),
                         ],
                       ),
                     ),
@@ -318,14 +299,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) =>  LoginScreen(),
-                            ),
+                            MaterialPageRoute(builder: (_) => LoginScreen()),
                           );
                         },
 
-                        icon: const Icon(Icons.logout,
-                            color: Colors.red),
+                        icon: const Icon(Icons.logout, color: Colors.red),
 
                         label: const Text(
                           "Log Out",
@@ -333,7 +311,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),

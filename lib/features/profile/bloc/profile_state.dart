@@ -12,12 +12,6 @@ class CategoryLoaded extends ProfileState {
   CategoryLoaded(this.categories);
 }
 
-class CategorySuccess extends ProfileState {
-  final String message;
-
-  CategorySuccess(this.message);
-}
-
 class CategoryError extends ProfileState {
   final String message;
 

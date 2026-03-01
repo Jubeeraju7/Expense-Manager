@@ -112,6 +112,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
             }
           }
         } else if (state is AuthSuccess) {
+          print("nickname : ${state.nickname}");
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

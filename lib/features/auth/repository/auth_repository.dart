@@ -4,13 +4,13 @@ import 'package:proactive_expense_manager/core/utils/shared_perferences.dart';
 
 class AuthRepository {
   final Dio dio = Dio(BaseOptions(baseUrl: AppConfig.baseUrl));
+  final SharedPreferencesDataProvider prefs = SharedPreferencesDataProvider();
 
   AuthRepository() {
     _addToken();
   }
 
-  void _addToken() async {
-    final prefs = SharedPreferencesDataProvider();
+  Future<void> _addToken() async {
     String token = await prefs.getAccessToken();
 
     if (token.isNotEmpty) {
@@ -18,15 +18,21 @@ class AuthRepository {
     }
   }
 
-
   Future<Map<String, dynamic>> sendOtp(String phone) async {
     try {
       final response = await dio.post(
         "/auth/send-otp/",
         data: {"phone": "+91$phone"},
       );
-      print(response);
-      return response.data;
+
+      final data = response.data;
+
+      if (data["nickname"] != null) {
+        await prefs.saveUserName(data["nickname"]);
+      }
+
+      print("sendOtp response: $data");
+      return data;
     } catch (e) {
       print("sendOtp error: $e");
       return {};
@@ -40,15 +46,23 @@ class AuthRepository {
     try {
       final response = await dio.post(
         "/auth/create-account/",
-        data: {"phone": "+91$phone", "nickname": nickname},
+        data: {
+          "phone": "+91$phone",
+          "nickname": nickname,
+        },
       );
-       print(response);
-      return response.data;
+
+      final data = response.data;
+
+      if (data["nickname"] != null) {
+        await prefs.saveUserName(data["nickname"]);
+      }
+
+      print("createAccount response: $data");
+      return data;
     } catch (e) {
       print("createAccount error: $e");
       return {};
     }
   }
-
-
 }

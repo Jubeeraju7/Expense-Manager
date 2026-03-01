@@ -1,15 +1,15 @@
 class Category {
-  final String id;
+  final String categoryid;
   final String name;
 
   Category({
-    required this.id,
+    required this.categoryid,
     required this.name,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: json['id'] ?? '',
+      categoryid: json['category_id'] ?? '',
       name: json['name'] ?? '',
     );
   }

@@ -81,9 +81,21 @@ class LoginScreen extends StatelessWidget {
                           backgroundColor: const Color(0xFF312ECB),
                         ),
                         onPressed: () {
-                          context.read<AuthBloc>().add(
-                            SendOtpEvent(phoneController.text),
-                          );
+                          final phone = phoneController.text.trim();
+
+                          if (phone.length < 10) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Phone number must be at least 10 digits",
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
+                          context.read<AuthBloc>().add(SendOtpEvent(phone));
                         },
                         child: state is AuthLoading
                             ? const CircularProgressIndicator(
