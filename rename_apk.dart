@@ -25,7 +25,7 @@ void main() async {
 
   // Define the original and new APK paths
   final originalApkPath = 'build/app/outputs/flutter-apk/app-release.apk';
-  final newApkPath = 'build/app/outputs/flutter-apk/Sales App-$formattedDate $formattedTime.apk';
+  final newApkPath = 'build/app/outputs/flutter-apk/Proactive-expense-manager $formattedDate $formattedTime.apk';
 
   // Rename the APK file
   final originalFile = File(originalApkPath); 
