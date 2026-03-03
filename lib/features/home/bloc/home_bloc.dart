@@ -1,8 +1,8 @@
-import 'package:proactive_expense_manager/features/home/model/category_model.dart';
 import 'home_event.dart';
 import 'home_state.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proactive_expense_manager/features/home/model/category_model.dart';
 import 'package:proactive_expense_manager/features/home/repository/home_repository.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {

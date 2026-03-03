@@ -38,7 +38,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-
               const Text(
                 "Profile & Settings",
                 style: TextStyle(
@@ -47,16 +46,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 25),
-
               const Text(
                 "NICKNAME",
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
-
               const SizedBox(height: 8),
-
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: _boxDecoration(),
@@ -77,16 +72,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 25),
-
               const Text(
                 "ALERT LIMIT (₹)",
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
-
               const SizedBox(height: 8),
-
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: _boxDecoration(),
@@ -114,9 +105,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(width: 10),
-
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF5C5CFF),
@@ -128,9 +117,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-
                           onPressed: () {},
-
                           child: const Text(
                             "Set",
                             style: TextStyle(color: Colors.white, fontSize: 12),
@@ -138,9 +125,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 10),
-
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -151,16 +136,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 25),
-
               const Text(
                 "CATEGORIES",
                 style: TextStyle(color: Colors.grey, fontSize: 12),
               ),
-
               const SizedBox(height: 8),
-
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: _boxDecoration(),
@@ -187,22 +168,17 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(width: 10),
-
                         GestureDetector(
                           onTap: () {
                             final name = categoryController.text.trim();
-
                             if (name.isNotEmpty) {
                               context.read<ProfileBloc>().add(
                                 AddCategoryEvent(name),
                               );
-
                               categoryController.clear();
                             }
                           },
-
                           child: Container(
                             height: 45,
                             width: 45,
@@ -215,9 +191,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 15),
-
                     BlocBuilder<ProfileBloc, ProfileState>(
                       builder: (context, state) {
                         if (state is CategoryLoading) {
@@ -225,7 +199,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             child: CircularProgressIndicator(),
                           );
                         }
-
                         if (state is CategoryLoaded) {
                           return ListView(
                             shrinkWrap: true,
@@ -236,32 +209,25 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 context.read<ProfileBloc>().add(
                                   DeleteCategoryEvent([category.categoryid]),
                                 );
-                                
                               });
                             }).toList(),
                           );
                         }
-
                         return const SizedBox();
                       },
                     ),
-
                     const SizedBox(height: 25),
-
                     const Text(
                       "CLOUD SYNC",
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
-
                     const SizedBox(height: 8),
-
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: const Color(0xFF5C5CFF),
                         borderRadius: BorderRadius.circular(12),
                       ),
-
                       child: Row(
                         children: const [
                           Expanded(
@@ -276,9 +242,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-
                                 SizedBox(height: 4),
-
                                 Text(
                                   "Sync and update data to the backend",
                                   style: TextStyle(color: Colors.white70),
@@ -286,14 +250,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               ],
                             ),
                           ),
-
                           Icon(Icons.cloud_upload, color: Colors.white),
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 20),
-
                     Center(
                       child: TextButton.icon(
                         onPressed: () {
@@ -302,9 +263,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             MaterialPageRoute(builder: (_) => LoginScreen()),
                           );
                         },
-
                         icon: const Icon(Icons.logout, color: Colors.red),
-
                         label: const Text(
                           "Log Out",
                           style: TextStyle(color: Colors.red),

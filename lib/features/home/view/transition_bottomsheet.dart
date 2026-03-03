@@ -56,7 +56,6 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// HEADER
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -78,8 +77,6 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                     ],
                   ),
                   const SizedBox(height: 20),
-
-                  /// EXPENSE / INCOME SWITCH
                   Row(
                     children: [
                       Expanded(
@@ -130,10 +127,7 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 20),
-
-                  /// TITLE
                   TextFormField(
                     controller: titleController,
                     style: const TextStyle(color: Colors.white),
@@ -153,8 +147,6 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                         : null,
                   ),
                   const SizedBox(height: 15),
-
-                  /// AMOUNT
                   TextFormField(
                     controller: amountController,
                     keyboardType: TextInputType.number,
@@ -178,10 +170,8 @@ class _AddTransactionSheetState extends State<AddTransactionSheet> {
                     },
                   ),
                   const SizedBox(height: 20),
-
                   const Text("CATEGORY", style: TextStyle(color: Colors.white)),
                   const SizedBox(height: 10),
-
                   BlocBuilder<HomeBloc, HomeState>(
                     builder: (context, state) {
                       if (state is HomeLoaded) {

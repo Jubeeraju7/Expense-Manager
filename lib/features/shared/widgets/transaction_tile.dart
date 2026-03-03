@@ -26,7 +26,6 @@ class TransactionTile extends StatelessWidget {
     final note = tx['note'] ?? "Unknown";
     final timestamp = tx['timestamp'] ?? "";
     final id = tx['id'] ?? "";
-
     final sign = type == "credit" ? "+" : "-";
     final color = type == "credit" ? Colors.green : Colors.red;
 
@@ -40,7 +39,6 @@ class TransactionTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Left side: Note and Category
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -61,7 +59,6 @@ class TransactionTile extends StatelessWidget {
               ),
             ],
           ),
-          // Right side: Date, Amount and Delete
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -87,7 +84,7 @@ class TransactionTile extends StatelessWidget {
                   const SizedBox(width: 8),
                   GestureDetector(
                     onTap: () {
-                      // Confirm deletion
+                     
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
